@@ -1,0 +1,22 @@
+diff --git a/minecraft_dynmap_timemachine/dynmap.py b/minecraft_dynmap_timemachine/dynmap.py
+index fd337c0..789f219 100644
+--- a/minecraft_dynmap_timemachine/dynmap.py
++++ b/minecraft_dynmap_timemachine/dynmap.py
+@@ -56,6 +56,17 @@ class DynMap(object):
+ 
+     @property
+     def urls(self):
++        # TORO: standalone/config.js is not served by api.torosaba.net/map/v1,
++        # so return the fixed relative paths instead of downloading it.
++        if not self._config_urls:
++            self._config_urls = {
++                'configuration': 'configuration',
++                'update': 'world/{world}/{timestamp}',
++                'tiles': 'tiles/',
++            }
++        return self._config_urls
++
++    def _urls_from_server(self):
+         if not self._config_urls:
+             # if self._config_urls_json:
+             #     self._config_urls = json.loads(self._config_urls_json)
